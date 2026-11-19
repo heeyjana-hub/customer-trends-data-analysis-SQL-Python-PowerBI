@@ -1,92 +1,56 @@
-# 👨🏻‍💻Customer Behavior Data Analyst Portfolio Project
-This project represents a complete, industry standard, end-to-end data analytics workflow, designed to mirror the real responsibilities of professional analysts in modern business environments. The project encompasses all critical stages of data analysis, from data preparation and modeling to insight generation, visualization, and reporting.
+# Análise de Comportamento do Consumidor — Queries SQL Autorais
 
-This project is perfect for:
-- 📊 Data Analyst aspirants who want to build a strong **Portfolio Project** for interviews and LinkedIn
-- 📚 Anyone learning Python, SQL, and Power BI
-- 💼 Professionals preparing for interviews in Data Analytics, Data Science or Product Analytics roles
+Projeto de análise de dados de varejo usando a base **Customer Shopping Behavior**, com foco em **logística, sensibilidade a desconto, mix de produtos e sazonalidade**. 
+As queries SQL deste repositório foram escritas por mim para responder a perguntas de negócio específicas, usando o dataset público disponibilizado por Amlan Mohanty.
 
-# **🎥 Watch this [YouTube video](https://www.youtube.com/watch?v=5PrZvPeUw60&list=PLAx-M6Di0SisFJ1rv5M_FRHUlGA5rtUf_&index=3) to implement the full project from scratch:**  
-[![Advanced Data Analysis Portfolio Project using Retail Customer Data](https://github.com/user-attachments/assets/abbb6371-a0b2-4bec-a304-7c7da98658b6)](https://www.youtube.com/watch?v=x8dfQkKTyP0&list=PLAx-M6Di0SisFJ1rv5M_FRHUlGA5rtUf_&index=2)
-🔗 *Link to Video:* [Watch on Youtube](https://www.youtube.com/watch?v=5PrZvPeUw60&list=PLAx-M6Di0SisFJ1rv5M_FRHUlGA5rtUf_&index=3)
+## 📊 Sobre a Base de Dados
+- **Nome:** Customer Shopping Behavior
+- **Fonte original:** [amlanmohanty1/customer-trends-data-analysis-SQL-Python-PowerBI](https://github.com/amlanmohanty1/customer-trends-data-analysis-SQL-Python-PowerBI)
+- **Arquivo:** `customer_shopping_behavior.csv` (disponível no repositório original)
 
+> ⚠️ **Nota de atribuição:** O dataset **não é de minha autoria**. Ele foi disponibilizado publicamente no repositório do Amlan Mohanty. Este projeto é uma **reinterpretação analítica autoral**: utilizei o mesmo CSV, mantive os nomes originais das colunas para facilitar a reprodução, mas escrevi **minhas próprias queries SQL** para responder às perguntas de negócio que defini.
 
-## 📌 Project Overview
-The goal of this project is to simulate a corporate-grade end-to-end data analytics workflow, demonstrating the ability to translate raw data into strategic business intelligence by:
+## 🧠 Perguntas de Negócio e Queries
 
-✅ Data Preparation,Modeling & Exploratory Data Analysis (Python): Clean and transform the raw dataset for analysis.
+| # | Arquivo | Pergunta de Negócio | O que a query faz |
+|---|---------|---------------------|-------------------|
+| Q1 | `queries/panorama_geral.sql` | Qual é a modalidade de entrega mais popular e como a base está distribuída entre os fretes? | Conta clientes por modalidade e calcula o percentual sobre o total |
+| Q2 | `queries/comportamento_compra.sql` | O tipo de frete muda o tipo de produto comprado? | Cruza categoria × tipo de envio e calcula o percentual de cada categoria dentro de cada frete |
+| Q3 | `queries/sensibilidade_desconto.sql` | Qual modalidade de entrega tem a maior dependência de cupons? | Calcula a taxa de uso de desconto (Yes/No) por tipo de envio |
+| Q4 | `queries/impacto_financeiro.sql` | Os clientes do frete mais caro compensam com ticket maior ou gastam menos e ainda pedem desconto? | Cruza volume, faturamento, ticket médio e taxa de desconto por modalidade |
+| Q5 | `queries/sazonalidade.sql` | O volume de vendas por categoria sofre grandes picos de sazonalidade? | Distribui a frequência de compra por categoria e período |
 
-✅ Data Analysis (SQL): Simulate business transactions, and run queries to extract insights on customer segments, loyalty, and purchase drivers.
+## 📈 Principais Insights
 
-✅ Visualization & Insights (Power BI): Build an interactive dashboard that highlights key patterns and trends, enabling stakeholders to make data-driven decisions.
+### 1. Panorama geral — equilíbrio logístico
+A base é **extremamente equilibrada**: nenhuma modalidade de envio concentra mais de 20% dos clientes (cada uma tem entre ~650 e 675 clientes). O Free Shipping lidera (17,31%), mas não há sobrecarga em um único canal logístico — a operação tem diversidade saudável e o cliente tem liberdade de escolha.
 
-✅ Report and Presentation: Write a clear project report summarizing your key findings and business recommendations. Prepare a presentation that visually communicates insights and actionable recommendations to stakeholders.
+### 2. Comportamento de compra — mix resiliente
+O mix de produtos é **estável em todos os fretes**: Clothing (Roupas) representa quase **45%** das compras em todas as modalidades, seguido por Accessories (Acessórios) com **~32%**. 
+**Implicação:** o tipo de frete **não altera** o padrão de consumo. A empresa pode padronizar a separação de estoque — roupas e acessórios são sempre prioridade, independentemente do frete.
 
-![Project Workflow](https://github.com/user-attachments/assets/8bbd5dc9-eb6c-40c1-8f19-c08b4107f654)
+### 3. Sensibilidade ao desconto — alerta no Next Day Air
+O **Next Day Air** é o grande ponto de atenção: **45,52%** dos pedidos usam cupom de desconto — a maior taxa entre todas as modalidades. 
+Em contrapartida, o **2-Day Shipping** tem a menor dependência (**40,67%**). 
+**Implicação:** o frete mais caro e urgente é o que mais exige subsídio via desconto, o que pode corroer a margem.
 
-## 🛠️ How to Use This Project
+### 4. Impacto financeiro — problema confirmado
+O **Next Day Air não se paga**: tem a maior taxa de uso de cupom (45,52%) e, ao mesmo tempo, o **segundo pior ticket médio da base (R$ 58,63)**. 
+Ou seja, estamos subsidiando o frete mais caro para compras de baixo valor — um alerta crítico de margem.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/amlanmohanty1/customer-trends-data-analysis-SQL-Python-PowerBI.git
-   cd customer-trends-data-analysis-SQL-Python-PowerBI
-   ```
-2. **Open Customer_Shopping_Behavior_Analysis.ipynb notebook**
+### 5. Sazonalidade — demanda linear
+A volumetria é **linear**: não há flutuações drásticas na frequência de compra por categoria. 
+**Implicação:** a demanda é previsível, o que permite fluxo contínuo (Just in Time), reduz custos de estocagem e dispensa grandes liquidações. A estratégia deve focar em **recorrência e fidelidade**, não em picos promocionais.
 
-    This file contains:
+## 🔧 Como reproduzir
+1. Baixe o arquivo `customer_shopping_behavior.csv` no [repositório original](https://github.com/amlanmohanty1/customer-trends-data-analysis-SQL-Python-PowerBI).
+2. Abra o seu banco de dados SQLite (usando uma ferramenta como DBeaver, DB Browser for SQLite ou a extensão SQLite do VS Code).
+3. Importe o arquivo CSV para criar a tabela `customer` (certifique-se de que o cabeçalho do CSV seja lido como o nome das colunas).
+4. Execute as queries da pasta `queries/` para reproduzir os insights.
 
-      - Data Import
+## 🛠️ Tecnologias
+- **SQL** (SQLite)
 
-      - Data exploration
-
-      - Data cleaning
-
-      - Connection to SQL Database
-  
-3. **Load the data from Python notebook into MySQL/PostgreSQL/MS SQL Server**
-
-      - Create a database in SQL
-
-      - Run Python code to load data into SQL database
-  
-      - Open **customer_behavior_sql_queries.sql**
-  
-      - Answer Business Questions using SQL Queries 
-      
-4. **Connect the SQL Database to Power BI**
-
-      - Open **customer_behavior_dashboard.pbix**
-   
-      - Create interactive dashboard in Power BI
-  
-6. **Create Project Report and Presentation**
-
-      - Create project report
-   
-      - Build presentation deck using Gamma AI
-  
-7. **Follow along with the YouTube video for full walkthrough. 👨‍💼**
-
-
-## 📜 License
-
-MIT — feel free to fork, star, and use in your portfolio.
-
-## 👨‍💻 About the Author
-Hey, I’m Amlan Mohanty, a Data Analyst & Content Creator.
-I break down complex data topics into simple, practical content that actually helps you land a job.
-
- ### 🚀 Stay Connected & Join my Data Community
-If you enjoyed this project and want to keep learning and growing as a data analyst, let’s stay in touch! I regularly share content around SQL, data analytics, portfolio projects, job tips, and more.
-
-🎥 YouTube: [Amlan Mohanty](https://www.youtube.com/@amlanmohanty1)
-- Beginner-friendly tutorials, real-world projects, job and career advice
-
-📺 Instagram: [datacareerschool](https://www.instagram.com/datacareerschool/)
-- Quick SQL tips, data memes, and behind-the-scenes content
-
-💼 LinkedIn: [Amlan Mohanty](https://www.linkedin.com/in/amlanmohanty1/)
-- Let’s connect professionally and grow your data career
-
-
-## 💡 Thanks for checking out the project! Your support means a lot! Feel free to star ⭐ this repo or share it with someone learning Data Analytics.🚀
+## 🙏 Créditos e Atribuição
+- **Base de dados e projeto de referência:** [Amlan Mohanty](https://github.com/amlanmohanty1/customer-trends-data-analysis-SQL-Python-PowerBI).
+- **Queries SQL deste repositório:** escritas por mim, com base nas perguntas de negócio que defini.
